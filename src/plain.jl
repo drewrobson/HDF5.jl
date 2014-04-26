@@ -207,6 +207,8 @@ const H5T_NATIVE_UINT64   = read_const(:H5T_NATIVE_UINT64_g)
 const H5T_NATIVE_FLOAT    = read_const(:H5T_NATIVE_FLOAT_g)
 const H5T_NATIVE_DOUBLE   = read_const(:H5T_NATIVE_DOUBLE_g)
 
+const H5_SZIP_EC_OPTION_MASK = 4
+const H5_SZIP_NN_OPTION_MASK = 32
 
 ## Conversion between Julia types and HDF5 atomic types
 hdf5_type_id(::Type{Int8})       = H5T_NATIVE_INT8
@@ -1783,6 +1785,7 @@ for (jlname, h5name, outtype, argtypes, argsyms, msg) in
      (:h5p_set_external, :H5Pset_external, Herr, (Hid, Ptr{Uint8}, Int, Csize_t), (:plist_id, :name, :offset, :size), "Error setting external property"),
      (:h5p_set_fclose_degree, :H5Pset_fclose_degree, Herr, (Hid, Cint), (:plist_id, :fc_degree), "Error setting close degree"),
      (:h5p_set_deflate, :H5Pset_deflate, Herr, (Hid, Cuint), (:plist_id, :setting), "Error setting compression method and level (deflate)"),
+     (:h5p_set_szip, :H5Pset_szip, Herr, (Hid, Cuint, Cuint), (:plist_id, :setting1, :setting2), "Error setting compression method and level (szip)"),
      (:h5p_set_layout, :H5Pset_layout, Herr, (Hid, Cint), (:plist_id, :setting), "Error setting layout"),
      (:h5p_set_userblock, :H5Pset_userblock, Herr, (Hid, Hsize), (:plist_id, :len), "Error setting userblock"),
      (:h5s_close, :H5Sclose, Herr, (Hid,), (:space_id,), "Error closing dataspace"),
@@ -2047,6 +2050,7 @@ const hdf5_prop_get_set = {
     "fclose_degree" => (get_fclose_degree, h5p_set_fclose_degree),
     "compress"      => (nothing, h5p_set_deflate),
     "deflate"       => (nothing, h5p_set_deflate),
+    "szip"          => (nothing, h5p_set_szip),
     "layout"        => (h5p_get_layout, h5p_set_layout),
     "userblock"     => (get_userblock, h5p_set_userblock),
 }
